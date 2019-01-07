@@ -1,6 +1,6 @@
 FROM sebp/lighttpd
 
-MAINTAINER Oliver Pelz "o.pelz@gmail.com"
+MAINTAINER Florian Heigwer "f.heigwer@dkfz.de"
 
 # RUN wget http://dl-cdn.alpinelinux.org/alpine/v3.4/main/x86_64/APKINDEX.tar.gz
 
@@ -88,11 +88,6 @@ RUN perl -MCPAN -e 'CPAN::Shell->install("Tk::MainWindow")'
 RUN perl -MCPAN -e 'CPAN::Shell->install("Tk::NoteBook")'
 RUN perl -MCPAN -e 'CPAN::Shell->install("Tk::Text::SuperText")'
 
-
-bowtie-1.2.1.1-src.zip; unzip bowtie-1.2.1.1-src.zip; cd bowtie-1.2.1.1; make; cp bowtie bowtie-* /usr/bin;
-
-bowtie2-2.3.2-source.zip; unzip bowtie2-2.3.2-source.zip; cd bowtie2-2.3.2; make; cp bowtie2 bowtie2-* /usr/bin;
-
 ENV BOWTIE2_VERSION 2.2.8
 ENV BOWTIE_VERSION 1.2.2
 
@@ -107,14 +102,10 @@ RUN wget https://downloads.sourceforge.net/project/bowtie-bio/bowtie/$BOWTIE_VER
     && mv /usr/bin/bowtie-*/bowtie* /usr/bin/
 
 COPY etc/cld /var/www/cld
+
 RUN cp /var/www/cld/cld* /usr/bin/
 
-
-# install intervaltree...another dependency
-
 RUN cd /var/www/cld/depends/Set-IntervalTree-0.10-OD; perl Makefile.PL; make; make test && make install
-
-
 
 RUN touch /var/log/talecrisp.log
 RUN chown lighttpd:lighttpd /var/log/talecrisp.log 
